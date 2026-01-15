@@ -1,4 +1,8 @@
 package com.luis.proyectofinal_luisalfonso.models.enums;
 
 public enum MaterialRarity {
+    COMMON,
+    UNCOMMON,
+    RARE,
+    LEGENDARY
 }
