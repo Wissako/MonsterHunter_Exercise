@@ -1,32 +1,31 @@
 package com.luis.proyectofinal_luisalfonso.models.entities;
 
-import com.luis.proyectofinal_luisalfonso.models.enums.MaterialRarity;
+import com.luis.proyectofinal_luisalfonso.models.enums.HabitatName;
+import com.luis.proyectofinal_luisalfonso.models.enums.HabitatWeather;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Data
 @Entity
-@Table(name = "materials")
-public class Materials {
+@Table(name = "habitats")
+public class Habitat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name="material_name", nullable = false, length = 30)
-    private String name;
-
-    @Column(name="material_value", nullable = false)
-    private double value;
-
-    @Column(name="material_rarity", nullable = false)
-    @Builder.Default
     @Enumerated(EnumType.STRING)
-    private MaterialRarity rarity=MaterialRarity.COMMON;
+    @Builder.Default
+    private HabitatName zone=HabitatName.ANCIENT_FOREST;
+
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private HabitatWeather weather=HabitatWeather.SUNNY;
+
+
 }

@@ -7,8 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "quest")
-public class Quests {
+@Table(name = "quests")
+public class Quest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -24,5 +24,5 @@ public class Quests {
     private double reward;
     @ManyToOne
     @JoinColumn(name = "target_monster_id")
-    private Monsters target;
+    private Monster target;
 }

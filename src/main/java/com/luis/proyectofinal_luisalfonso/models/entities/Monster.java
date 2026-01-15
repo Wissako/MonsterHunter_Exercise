@@ -13,8 +13,8 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "monster")
-public class Monsters {
+@Table(name = "monsters")
+public class Monster {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -43,7 +43,7 @@ public class Monsters {
             joinColumns = @JoinColumn(name = "monster_id"),
             inverseJoinColumns = @JoinColumn(name = "material_id")
     )
-    private List<Materials> drops;
+    private List<Material> drops;
 
     @ManyToMany
     @JoinTable(
@@ -51,5 +51,5 @@ public class Monsters {
             joinColumns = @JoinColumn(name = "monster_id"),
             inverseJoinColumns = @JoinColumn(name = "habitat_id")
     )
-    private List<Habitats> habitats;
+    private List<Habitat> habitats;
 }

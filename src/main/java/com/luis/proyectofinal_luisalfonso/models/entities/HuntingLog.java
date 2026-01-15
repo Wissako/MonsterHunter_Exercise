@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "huntig_log")
-public class HuntigLogs {
+@Table(name = "hunting_logs")
+public class HuntingLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -27,9 +27,9 @@ public class HuntigLogs {
     //Relaciones
     @ManyToOne
     @JoinColumn(name = "hunter_id", nullable = false)
-    private Hunters hunter;
+    private Hunter hunter;
 
     @ManyToOne
     @JoinColumn(name = "quest_id", nullable = false)
-    private Quests quest;
+    private Quest quest;
 }

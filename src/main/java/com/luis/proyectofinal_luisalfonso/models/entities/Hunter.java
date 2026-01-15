@@ -2,7 +2,6 @@ package com.luis.proyectofinal_luisalfonso.models.entities;
 
 import com.luis.proyectofinal_luisalfonso.models.enums.HunterWeapons;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "hunters")
-public class Hunters {
+public class Hunter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
