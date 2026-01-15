@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.*;
+import org.hibernate.validator.constraints.Range;
 
 import java.util.List;
 
@@ -33,8 +34,7 @@ public class Monster {
     private String weakness;
 
     @Column(name="monster_Threat_level", nullable = false)
-    @Min(0)
-    @Max(10)
+    @Range(min = 1, max = 10)
     private Integer threatLevel=5;
     // Relaciones
     @ManyToMany
