@@ -22,5 +22,7 @@ public class Quests {
 
     @Column(name="quest_reward", nullable = false)
     private double reward;
-
+    @ManyToOne
+    @JoinColumn(name = "target_monster_id")
+    private Monsters target;
 }

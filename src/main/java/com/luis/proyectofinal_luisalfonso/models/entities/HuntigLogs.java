@@ -24,5 +24,12 @@ public class HuntigLogs {
 
     @Column(name="successful", nullable = false)
     private Boolean successful;
+    //Relaciones
+    @ManyToOne
+    @JoinColumn(name = "hunter_id", nullable = false)
+    private Hunters hunter;
 
+    @ManyToOne
+    @JoinColumn(name = "quest_id", nullable = false)
+    private Quests quest;
 }

@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.*;
 
+import java.util.List;
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,5 +36,20 @@ public class Monsters {
     @Min(0)
     @Max(10)
     private Integer threatLevel=5;
+    // Relaciones
+    @ManyToMany
+    @JoinTable(
+            name = "monster_materials",
+            joinColumns = @JoinColumn(name = "monster_id"),
+            inverseJoinColumns = @JoinColumn(name = "material_id")
+    )
+    private List<Materials> drops;
 
+    @ManyToMany
+    @JoinTable(
+            name = "monster_habitats",
+            joinColumns = @JoinColumn(name = "monster_id"),
+            inverseJoinColumns = @JoinColumn(name = "habitat_id")
+    )
+    private List<Habitats> habitats;
 }

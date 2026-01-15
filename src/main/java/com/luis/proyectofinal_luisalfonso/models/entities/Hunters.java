@@ -1,5 +1,6 @@
 package com.luis.proyectofinal_luisalfonso.models.entities;
 
+import com.luis.proyectofinal_luisalfonso.models.enums.HunterWeapons;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +23,8 @@ public class Hunters {
     private Integer rank;
 
     @Column(name="main_weapon", nullable = false, length = 20)
-    private String mainWeapon;
+    @Enumerated(EnumType.STRING)
+    private HunterWeapons mainWeapon=HunterWeapons.GREAT_SWORD;
 
     @Column(name="email", nullable = false)
     private String email;
