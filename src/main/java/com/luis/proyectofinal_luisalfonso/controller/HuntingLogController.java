@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/hunting-logs")
-class HuntingLogController {
+public class HuntingLogController {
 @Autowired
         private HuntingLogService huntingLogService;
 

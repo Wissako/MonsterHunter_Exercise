@@ -45,5 +45,12 @@ public class MonsterService {
                 .map(monsterMapper::toResponse)
                 .collect(Collectors.toList());
     }
+ //Buscar por nombre, debilidad y hábitat (Consulta compleja con JOIN FETCH y LOWER CONCAT)
+    public List<MonsterResponse> complexSearch(String name,String weakness, HabitatName zone){
+        return monsterRepository.findComplexSearch(name, weakness, zone)
+                .stream()
+                .map(monsterMapper::toResponse)
+                .collect(Collectors.toList());
+    }
 }
 

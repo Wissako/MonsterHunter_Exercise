@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HunterRepository extends JpaRepository<Hunter, Long> {
 
+    boolean findByEmail(String email);
 }
 
