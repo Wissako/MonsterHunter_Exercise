@@ -20,8 +20,6 @@ public class QuestService {
     @Autowired
         private QuestMapper questMapper;
     @Autowired
-        private QuestService questService;
-    @Autowired
         private QuestRepository questRepository;
     @Autowired
     private MonsterRepository monsterRepository;
