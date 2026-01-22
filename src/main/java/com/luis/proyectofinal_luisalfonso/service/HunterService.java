@@ -9,11 +9,13 @@ import com.luis.proyectofinal_luisalfonso.repositories.HunterRepository;
 import com.luis.proyectofinal_luisalfonso.error.ResourceNotFoundException; // Asegúrate de importar tu excepción
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class HunterService {
 
     @Autowired
@@ -23,6 +25,7 @@ public class HunterService {
     private HunterMapper hunterMapper;
 
     // CREAR
+    @Transactional
     public HunterResponse createHunter(HunterRequest request) {
         if (hunterRepository.findByEmail(request.email())) {
             throw new IllegalArgumentException("El email ya está en uso");
@@ -61,6 +64,7 @@ public class HunterService {
     }
 
     // ELIMINAR POR ID
+    @Transactional
     public void deleteHunter(Long id) {
         if (!hunterRepository.existsById(id)) {
             throw new ResourceNotFoundException("Cazador", id);

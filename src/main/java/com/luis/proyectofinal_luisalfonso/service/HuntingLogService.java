@@ -12,12 +12,14 @@ import com.luis.proyectofinal_luisalfonso.repositories.HuntingLogRepository;
 import com.luis.proyectofinal_luisalfonso.repositories.QuestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class HuntingLogService {
 @Autowired
     private HuntingLogRepository huntingLogRepository;
@@ -29,6 +31,7 @@ public class HuntingLogService {
         private HuntingLogMapper huntingLogMapper;
 
 
+@Transactional
 public HuntingLogResponse createLog(HuntingLogRequest request){
     Hunter hunter= hunterRepository.findById(request.hunterId())
             .orElseThrow(()-> new ResourceNotFoundException("Hunter not found", request.hunterId()));
@@ -48,6 +51,7 @@ public HuntingLogResponse createLog(HuntingLogRequest request){
     HuntingLog savedLog = huntingLogRepository.save(log);
     return huntingLogMapper.toResponse(savedLog);
 }
+
 public List<HuntingLogResponse> getHistoryByHunter(Long hunterId){
     return huntingLogRepository.findByHunter_Id(hunterId)
             .stream()

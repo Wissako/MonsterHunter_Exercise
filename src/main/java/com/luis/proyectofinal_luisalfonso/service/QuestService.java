@@ -11,11 +11,13 @@ import com.luis.proyectofinal_luisalfonso.repositories.QuestRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class QuestService {
     @Autowired
         private QuestMapper questMapper;
@@ -23,7 +25,7 @@ public class QuestService {
         private QuestRepository questRepository;
     @Autowired
     private MonsterRepository monsterRepository;
-
+    @Transactional
     public QuestResponse createQuest(@Valid QuestRequest request){
         Monster target= monsterRepository.findById(request.targetMonsterId())
                 .orElseThrow(()-> new ResourceNotFoundException("Monster not found", request.targetMonsterId()));
