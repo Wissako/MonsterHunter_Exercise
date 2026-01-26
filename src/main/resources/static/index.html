@@ -2,40 +2,51 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Gremio de Cazadores</title>
+    <title>Monster Hunter DB</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-    <h1>🐉 Panel del Gremio</h1>
-</header>
 
-<main>
-    <section id="hunter-section">
-        <h2>📝 Nuevo Cazador</h2>
-        <form id="createHunterForm">
-            <input type="text" id="hName" placeholder="Nombre" required>
-            <input type="email" id="hEmail" placeholder="Email" required>
-            <input type="number" id="hRank" placeholder="Rango" required>
-            <select id="hWeapon" required>
-                <option value="" disabled selected>Selecciona Arma...</option>
-            </select>
-            <button type="submit">Registrar</button>
-        </form>
-    </section>
+<div class="container">
+    <header>
+        <h1>🐉 Monster Hunter Database</h1>
+    </header>
 
-    <section id="quests-section">
-        <h2>📜 Tablón de Misiones</h2>
-        <button onclick="loadQuests()">🔄 Actualizar Misiones</button>
-        <div id="quests-container" class="cards-grid"></div>
-    </section>
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Buscar monstruo por nombre...">
+        <button onclick="searchMonster()">🔍 Buscar</button>
+        <button onclick="resetMonsters()" class="btn-secondary">Ver Todos</button>
+    </div>
 
-    <section id="monsters-section">
-        <h2>🐾 Enciclopedia de Monstruos</h2>
-        <button onclick="loadMonsters()">🔄 Actualizar Bestiario</button>
-        <div id="monsters-container" class="cards-grid"></div>
-    </section>
-</main>
+    <div class="main-content">
+        <section>
+            <h2>Bestiario</h2>
+            <div id="monsters-list" class="grid-list">
+            </div>
+        </section>
+
+        <section>
+            <div class="form-box">
+                <h3>Nuevo Cazador</h3>
+                <form id="hunterForm">
+                    <input type="text" id="hName" placeholder="Nombre" required>
+                    <input type="email" id="hEmail" placeholder="Email" required>
+                    <input type="number" id="hRank" placeholder="Rango" required>
+                    <select id="hWeapon" required>
+                        <option value="" disabled selected>Cargando armas...</option>
+                    </select>
+                    <button type="submit">Registrar</button>
+                </form>
+            </div>
+
+            <div class="quests-box">
+                <h3>Misiones Disponibles</h3>
+                <ul id="quests-list">
+                </ul>
+            </div>
+        </section>
+    </div>
+</div>
 
 <script src="script.js"></script>
 </body>

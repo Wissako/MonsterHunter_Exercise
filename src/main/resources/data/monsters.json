@@ -14,7 +14,7 @@
     "element": "None",
     "weakness": "Ice",
     "threatLevel": 7,
-    "habitats": ["wildspire_waste", "volcano"],
+    "habitats": ["WILDSPIRE_WASTE", "VOLCANO"],
     "drops": ["Twisted Horn", "Diablos Ridge"]
   },
   {
@@ -23,7 +23,7 @@
     "element": "Thunder",
     "weakness": "Ice",
     "threatLevel": 8,
-    "habitats": ["ancient_forest", "coral_highlands"],
+    "habitats": ["ANCIENT_FOREST", "CORAL_HIGHLANDS"],
     "drops": ["Zinogre Cortex", "Fulgsur"]
   }
 ]
