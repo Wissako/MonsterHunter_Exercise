@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gremio de Cazadores</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <h1>🐉 Monster Hunter Database</h1>
+</header>
+
+<main>
+    <section id="hunter-form">
+        <h2>Registrar Cazador</h2>
+        <form id="createHunterForm">
+            <input type="text" id="hName" placeholder="Nombre" required>
+            <input type="email" id="hEmail" placeholder="Email" required>
+            <input type="number" id="hRank" placeholder="Rango (1-999)" required>
+            <select id="hWeapon">
+                <option value="GREAT_SWORD">Gran Espada</option>
+                <option value="LONG_SWORD">Espada Larga</option>
+                <option value="HAMMER">Martillo</option>
+                <option value="BOW">Arco</option>
+            </select>
+            <button type="submit">Unirse al Gremio</button>
+        </form>
+    </section>
+
+    <section id="monsters-list">
+        <h2>Lista de Monstruos (JSON Cargado)</h2>
+        <button onclick="loadMonsters()">Actualizar Lista</button>
+        <div id="cards-container" class="cards-grid">
+        </div>
+    </section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
