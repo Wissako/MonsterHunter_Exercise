@@ -19,31 +19,30 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 public class QuestService {
+
     @Autowired
-        private QuestMapper questMapper;
+    private QuestMapper questMapper;
     @Autowired
-        private QuestRepository questRepository;
+    private QuestRepository questRepository;
     @Autowired
     private MonsterRepository monsterRepository;
+
     @Transactional
     public QuestResponse createQuest(@Valid QuestRequest request){
-        Monster target= monsterRepository.findById(request.targetMonsterId())
-                .orElseThrow(()-> new ResourceNotFoundException("Monster not found", request.targetMonsterId()));
-    //crear quest
-        Quest quest = new Quest();
-        quest.setName(request.name());
-        quest.setDifficulty(request.difficulty());
-        quest.setReward(request.reward());
+        // 1. Buscamos el monstruo
+        Monster target = monsterRepository.findById(request.targetMonsterId())
+                .orElseThrow(() -> new ResourceNotFoundException("Monstruo", request.targetMonsterId()));
+        Quest quest = questMapper.toEntity(request);
+        // 3. Completamos la relación
         quest.setTarget(target);
-        //guardar quest
+        // 4. Guardar
         Quest savedQuest = questRepository.save(quest);
         return questMapper.questToQuestResponse(savedQuest);
     }
+
     public List<QuestResponse> getAllQuests() {
-        return questRepository.findAll()
-                .stream()
+        return questRepository.findAll().stream()
                 .map(questMapper::questToQuestResponse)
                 .collect(Collectors.toList());
     }
-
 }

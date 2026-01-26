@@ -1,0 +1,29 @@
+[
+  {
+    "name": "Rathalos",
+    "type": "Flying Wyvern",
+    "element": "Fire",
+    "weakness": "Dragon",
+    "threatLevel": 6,
+    "habitats": ["ANCIENT_FOREST", "VOLCANO"],
+    "drops": ["Rathalos Scale", "Rathalos Shell"]
+  },
+  {
+    "name": "Diablos",
+    "type": "Flying Wyvern",
+    "element": "None",
+    "weakness": "Ice",
+    "threatLevel": 7,
+    "habitats": ["wildspire_waste", "volcano"],
+    "drops": ["Twisted Horn", "Diablos Ridge"]
+  },
+  {
+    "name": "Zinogre",
+    "type": "Fanged Wyvern",
+    "element": "Thunder",
+    "weakness": "Ice",
+    "threatLevel": 8,
+    "habitats": ["ancient_forest", "coral_highlands"],
+    "drops": ["Zinogre Cortex", "Fulgsur"]
+  }
+]

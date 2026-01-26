@@ -21,41 +21,40 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 public class HuntingLogService {
-@Autowired
+
+    @Autowired
     private HuntingLogRepository huntingLogRepository;
-@Autowired
+    @Autowired
     private HunterRepository hunterRepository;
-@Autowired
+    @Autowired
     private QuestRepository questRepository;
-@Autowired
-        private HuntingLogMapper huntingLogMapper;
+    @Autowired
+    private HuntingLogMapper huntingLogMapper;
 
+    @Transactional
+    public HuntingLogResponse createLog(HuntingLogRequest request) {
+        Hunter hunter = hunterRepository.findById(request.hunterId())
+                .orElseThrow(() -> new ResourceNotFoundException("Cazador", request.hunterId()));
+        Quest quest = questRepository.findById(request.questId())
+                .orElseThrow(() -> new ResourceNotFoundException("Misión", request.questId()));
 
-@Transactional
-public HuntingLogResponse createLog(HuntingLogRequest request){
-    Hunter hunter= hunterRepository.findById(request.hunterId())
-            .orElseThrow(()-> new ResourceNotFoundException("Hunter not found", request.hunterId()));
-    Quest quest= questRepository.findById(request.questId())
-            .orElseThrow(()-> new ResourceNotFoundException("Quest not found", request.questId()));
-    //Validación de Rango
-    if(hunter.getRank() < quest.getDifficulty()){
-        throw new IllegalArgumentException("Hunter rank is too low for this quest"+quest.getDifficulty()+" required, but hunter has rank "+hunter.getRank());
+        // 2. Lógica de Negocio (Rango)
+        if (hunter.getRank() < quest.getDifficulty()) {
+            throw new IllegalArgumentException("Rango insuficiente: Se requiere " + quest.getDifficulty() + " pero tienes " + hunter.getRank());
+        }
+
+        HuntingLog log = huntingLogMapper.toEntity(request);
+
+        log.setHunter(hunter);
+        log.setQuest(quest);
+        log.setHuntingDate(LocalDateTime.now());
+
+        return huntingLogMapper.toResponse(huntingLogRepository.save(log));
     }
-    HuntingLog log = new HuntingLog();
-    log.setHunter(hunter);
-    log.setQuest(quest);
-    log.setTimeTaken(request.timeTaken());
-    log.setSuccessful(request.successful());
-    log.setHuntingDate(LocalDateTime.now());
 
-    HuntingLog savedLog = huntingLogRepository.save(log);
-    return huntingLogMapper.toResponse(savedLog);
-}
-
-public List<HuntingLogResponse> getHistoryByHunter(Long hunterId){
-    return huntingLogRepository.findByHunter_Id(hunterId)
-            .stream()
-            .map(huntingLogMapper::toResponse)
-            .collect(Collectors.toList());
-}
+    public List<HuntingLogResponse> getHistoryByHunter(Long hunterId) {
+        return huntingLogRepository.findByHunter_Id(hunterId).stream()
+                .map(huntingLogMapper::toResponse)
+                .collect(Collectors.toList());
+    }
 }
