@@ -1,19 +1,18 @@
 package com.luis.proyectofinal_luisalfonso.config;
 
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import com.luis.proyectofinal_luisalfonso.models.entities.*;
 import com.luis.proyectofinal_luisalfonso.models.enums.*;
 import com.luis.proyectofinal_luisalfonso.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Configuration
 public class DataLoader {
@@ -27,105 +26,117 @@ public class DataLoader {
             QuestRepository questRepo
     ) {
         return args -> {
-            // -----------------------------------------------------------
-            // 1. CREAR HÁBITATS INICIALES (Si no existen)
-            // -----------------------------------------------------------
+            ObjectMapper mapper = new ObjectMapper();
+
+            // =============================================================
+            // 1. HÁBITATS BÁSICOS
+            // =============================================================
             if (habitatRepo.count() == 0) {
                 habitatRepo.save(Habitat.builder().zone(HabitatName.ANCIENT_FOREST).weather(HabitatWeather.RAINY).build());
                 habitatRepo.save(Habitat.builder().zone(HabitatName.VOLCANO).weather(HabitatWeather.SUNNY).build());
                 habitatRepo.save(Habitat.builder().zone(HabitatName.HOARFROST_REACH).weather(HabitatWeather.SNOWY).build());
                 habitatRepo.save(Habitat.builder().zone(HabitatName.ROTTEN_VALE).weather(HabitatWeather.WINDY).build());
-                System.out.println("✅ Hábitats iniciales creados.");
+                habitatRepo.save(Habitat.builder().zone(HabitatName.CORAL_HIGHLANDS).weather(HabitatWeather.SUNNY).build());
+                habitatRepo.save(Habitat.builder().zone(HabitatName.WILDSPIRE_WASTE).weather(HabitatWeather.SUNNY).build());
             }
             List<Habitat> allHabitats = habitatRepo.findAll();
 
-            // -----------------------------------------------------------
-            // 2. CARGAR MONSTRUOS DESDE JSON
-            // -----------------------------------------------------------
-            ObjectMapper mapper = new ObjectMapper();
-            InputStream inputStream = TypeReference.class.getResourceAsStream("/data/monsters.json");
-
+            // =============================================================
+            // 2. CARGAR MONSTRUOS (monsters.json)
+            // =============================================================
             try {
-                if (inputStream == null) {
-                    System.out.println("⚠️ ERROR: No se encuentra el archivo /data/monsters.json");
-                } else {
-                    // Convertimos el JSON a una lista de objetos Java temporales (DTO)
-                    List<MonsterJsonDto> monstersFromJson = mapper.readValue(inputStream, new TypeReference<List<MonsterJsonDto>>(){});
+                InputStream inputStream = TypeReference.class.getResourceAsStream("/data/monsters.json");
+                if (inputStream != null) {
+                    List<MonsterJsonDto> monsters = mapper.readValue(inputStream, new TypeReference<List<MonsterJsonDto>>(){});
 
-                    for (MonsterJsonDto dto : monstersFromJson) {
-                        // Evitamos duplicados por nombre
+                    for (MonsterJsonDto dto : monsters) {
                         if (monsterRepo.findByNameContainingIgnoreCase(dto.name).isEmpty()) {
+                            Monster m = new Monster();
+                            m.setName(dto.name);
+                            m.setType(dto.type);
+                            m.setElement(dto.element);
+                            m.setWeakness(dto.weakness);
+                            m.setThreatLevel(dto.threatLevel);
 
-                            Monster monster = new Monster();
-                            monster.setName(dto.name);
-                            monster.setType(dto.type);
-                            monster.setElement(dto.element);
-                            monster.setWeakness(dto.weakness);
-                            monster.setThreatLevel(dto.threatLevel);
-
-                            // A) Procesar Materiales (Drops)
+                            // Drops
                             List<Material> materials = new ArrayList<>();
-                            if (dto.drops != null) {
-                                for (String matName : dto.drops) {
-                                    // Creamos el material
-                                    Material m = new Material();
-                                    m.setName(matName);
-                                    m.setValue(dto.threatLevel * 150.0);
-                                    m.setRarity(dto.threatLevel > 7 ? MaterialRarity.RARE : MaterialRarity.COMMON);
-                                    materialRepo.save(m); //Guardar antes de asignar
-                                    materials.add(m);
+                            if(dto.drops != null) {
+                                for(String mat : dto.drops) {
+                                    Material material = new Material();
+                                    material.setName(mat);
+                                    material.setValue(200);
+                                    material.setRarity(MaterialRarity.COMMON);
+                                    materialRepo.save(material);
+                                    materials.add(material);
                                 }
                             }
-                            monster.setDrops(materials);
+                            m.setDrops(materials);
 
-                            // B) Procesar Hábitats
-                            List<Habitat> assignedHabitats = new ArrayList<>();
-                            if (dto.habitats != null) {
-                                for (String hName : dto.habitats) {
-                                    // Buscamos en la BBDD uno que coincida con el nombre del JSON
-                                    Optional<Habitat> match = allHabitats.stream()
+                            // Habitats (Busqueda simple)
+                            List<Habitat> myHabitats = new ArrayList<>();
+                            if(dto.habitats != null){
+                                for(String hName : dto.habitats){
+                                    allHabitats.stream()
                                             .filter(h -> h.getZone().name().equalsIgnoreCase(hName))
-                                            .findFirst();
-                                    match.ifPresent(assignedHabitats::add);
+                                            .findFirst()
+                                            .ifPresent(myHabitats::add);
                                 }
                             }
-                            // Si no encuentra hábitat, le ponemos uno por defecto para que no falle
-                            if (assignedHabitats.isEmpty()) assignedHabitats.add(allHabitats.get(0));
+                            if(myHabitats.isEmpty()) myHabitats.add(allHabitats.get(0));
+                            m.setHabitats(myHabitats);
 
-                            monster.setHabitats(assignedHabitats);
-
-                            monsterRepo.save(monster);
+                            monsterRepo.save(m);
                         }
                     }
-                    System.out.println("🐉 JSON CARGADO: " + monstersFromJson.size() + " monstruos añadidos.");
+                    System.out.println("✅ Monstruos cargados.");
                 }
             } catch (Exception e) {
-                System.out.println("❌ Error leyendo JSON: " + e.getMessage());
-                e.printStackTrace();
+                System.err.println("❌ Error en monsters.json: " + e.getMessage());
             }
 
-            // -----------------------------------------------------------
-            // 3. DATOS EXTRA (Para probar la web luego)
-            // -----------------------------------------------------------
-            if (hunterRepo.count() == 0) {
-                Hunter h = new Hunter();
-                h.setName("LuisHunter");
-                h.setEmail("luis@guild.com");
-                h.setRank(99);
-                h.setMainWeapon(HunterWeapons.LONG_SWORD);
-                hunterRepo.save(h);
+            // =============================================================
+            // 3. CARGAR MISIONES (quests.json) -> ¡NUEVO!
+            // =============================================================
+            try {
+                InputStream inputQuest = TypeReference.class.getResourceAsStream("/data/quests.json");
+                if (inputQuest != null) {
+                    List<QuestJsonDto> quests = mapper.readValue(inputQuest, new TypeReference<List<QuestJsonDto>>(){});
+
+                    for (QuestJsonDto qDto : quests) {
+                        // Buscamos al monstruo objetivo por nombre
+                        List<Monster> targets = monsterRepo.findByNameContainingIgnoreCase(qDto.target);
+
+                        if (!targets.isEmpty()) {
+                            Quest q = new Quest();
+                            q.setName(qDto.name);
+                            q.setDifficulty(qDto.difficulty);
+                            q.setReward(qDto.reward);
+                            q.setTarget(targets.get(0)); // Asignamos el primer monstruo que coincida
+
+                            questRepo.save(q);
+                        } else {
+                            System.out.println("⚠️ Misión saltada: No se encontró al monstruo " + qDto.target);
+                        }
+                    }
+                    System.out.println("✅ Misiones cargadas.");
+                }
+            } catch (Exception e) {
+                System.err.println("❌ Error en quests.json: " + e.getMessage());
             }
         };
     }
 
-    // AUX JSON DTO
+    // DTOs Auxiliares
     static class MonsterJsonDto {
-        public String name;
-        public String type;
-        public String element;
-        public String weakness;
+        public String name, type, element, weakness;
         public Integer threatLevel;
-        public List<String> drops;
-        public List<String> habitats;
+        public List<String> drops, habitats;
+    }
+
+    static class QuestJsonDto {
+        public String name;
+        public Integer difficulty;
+        public Double reward;
+        public String target;
     }
 }

@@ -4,5 +4,7 @@ public enum HabitatName {
     ANCIENT_FOREST,
     ROTTEN_VALE,
     HOARFROST_REACH,
-    VOLCANO
+    VOLCANO,
+    CORAL_HIGHLANDS,
+    WILDSPIRE_WASTE
 }

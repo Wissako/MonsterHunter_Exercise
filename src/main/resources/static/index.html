@@ -7,31 +7,33 @@
 </head>
 <body>
 <header>
-    <h1>🐉 Monster Hunter Database</h1>
+    <h1>🐉 Panel del Gremio</h1>
 </header>
 
 <main>
-    <section id="hunter-form">
-        <h2>Registrar Cazador</h2>
+    <section id="hunter-section">
+        <h2>📝 Nuevo Cazador</h2>
         <form id="createHunterForm">
             <input type="text" id="hName" placeholder="Nombre" required>
             <input type="email" id="hEmail" placeholder="Email" required>
-            <input type="number" id="hRank" placeholder="Rango (1-999)" required>
-            <select id="hWeapon">
-                <option value="GREAT_SWORD">Gran Espada</option>
-                <option value="LONG_SWORD">Espada Larga</option>
-                <option value="HAMMER">Martillo</option>
-                <option value="BOW">Arco</option>
+            <input type="number" id="hRank" placeholder="Rango" required>
+            <select id="hWeapon" required>
+                <option value="" disabled selected>Selecciona Arma...</option>
             </select>
-            <button type="submit">Unirse al Gremio</button>
+            <button type="submit">Registrar</button>
         </form>
     </section>
 
-    <section id="monsters-list">
-        <h2>Lista de Monstruos (JSON Cargado)</h2>
-        <button onclick="loadMonsters()">Actualizar Lista</button>
-        <div id="cards-container" class="cards-grid">
-        </div>
+    <section id="quests-section">
+        <h2>📜 Tablón de Misiones</h2>
+        <button onclick="loadQuests()">🔄 Actualizar Misiones</button>
+        <div id="quests-container" class="cards-grid"></div>
+    </section>
+
+    <section id="monsters-section">
+        <h2>🐾 Enciclopedia de Monstruos</h2>
+        <button onclick="loadMonsters()">🔄 Actualizar Bestiario</button>
+        <div id="monsters-container" class="cards-grid"></div>
     </section>
 </main>
 
