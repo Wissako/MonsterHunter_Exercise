@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Configuration;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet; // Necesario para la conversión
 import java.util.List;
-import java.util.Optional;
 
 @Configuration
 public class DataLoader {
@@ -28,9 +28,7 @@ public class DataLoader {
         return args -> {
             ObjectMapper mapper = new ObjectMapper();
 
-            // =============================================================
             // 1. HÁBITATS BÁSICOS
-            // =============================================================
             if (habitatRepo.count() == 0) {
                 habitatRepo.save(Habitat.builder().zone(HabitatName.ANCIENT_FOREST).weather(HabitatWeather.RAINY).build());
                 habitatRepo.save(Habitat.builder().zone(HabitatName.VOLCANO).weather(HabitatWeather.SUNNY).build());
@@ -41,9 +39,7 @@ public class DataLoader {
             }
             List<Habitat> allHabitats = habitatRepo.findAll();
 
-            // =============================================================
-            // 2. CARGAR MONSTRUOS (monsters.json)
-            // =============================================================
+            // 2. CARGAR MONSTRUOS
             try {
                 InputStream inputStream = TypeReference.class.getResourceAsStream("/data/monsters.json");
                 if (inputStream != null) {
@@ -58,32 +54,35 @@ public class DataLoader {
                             m.setWeakness(dto.weakness);
                             m.setThreatLevel(dto.threatLevel);
 
-                            // Drops
-                            List<Material> materials = new ArrayList<>();
+                            // Procesar Materiales
+                            List<Material> tempMaterials = new ArrayList<>();
                             if(dto.drops != null) {
                                 for(String mat : dto.drops) {
                                     Material material = new Material();
                                     material.setName(mat);
-                                    material.setValue(200);
+                                    material.setValue(200.0);
                                     material.setRarity(MaterialRarity.COMMON);
                                     materialRepo.save(material);
-                                    materials.add(material);
+                                    tempMaterials.add(material);
                                 }
                             }
-                            m.setDrops(materials);
+                            // CONVERSIÓN LIST -> SET
+                            m.setDrops(new HashSet<>(tempMaterials));
 
-                            // Habitats (Busqueda simple)
-                            List<Habitat> myHabitats = new ArrayList<>();
+                            // Procesar Hábitats
+                            List<Habitat> tempHabitats = new ArrayList<>();
                             if(dto.habitats != null){
                                 for(String hName : dto.habitats){
                                     allHabitats.stream()
                                             .filter(h -> h.getZone().name().equalsIgnoreCase(hName))
                                             .findFirst()
-                                            .ifPresent(myHabitats::add);
+                                            .ifPresent(tempHabitats::add);
                                 }
                             }
-                            if(myHabitats.isEmpty()) myHabitats.add(allHabitats.get(0));
-                            m.setHabitats(myHabitats);
+                            if(tempHabitats.isEmpty()) tempHabitats.add(allHabitats.get(0));
+
+                            // CONVERSIÓN LIST -> SET
+                            m.setHabitats(new HashSet<>(tempHabitats));
 
                             monsterRepo.save(m);
                         }
@@ -94,28 +93,20 @@ public class DataLoader {
                 System.err.println("❌ Error en monsters.json: " + e.getMessage());
             }
 
-            // =============================================================
-            // 3. CARGAR MISIONES (quests.json) -> ¡NUEVO!
-            // =============================================================
+            // 3. CARGAR MISIONES
             try {
                 InputStream inputQuest = TypeReference.class.getResourceAsStream("/data/quests.json");
                 if (inputQuest != null) {
                     List<QuestJsonDto> quests = mapper.readValue(inputQuest, new TypeReference<List<QuestJsonDto>>(){});
-
                     for (QuestJsonDto qDto : quests) {
-                        // Buscamos al monstruo objetivo por nombre
                         List<Monster> targets = monsterRepo.findByNameContainingIgnoreCase(qDto.target);
-
                         if (!targets.isEmpty()) {
                             Quest q = new Quest();
                             q.setName(qDto.name);
                             q.setDifficulty(qDto.difficulty);
                             q.setReward(qDto.reward);
-                            q.setTarget(targets.get(0)); // Asignamos el primer monstruo que coincida
-
+                            q.setTarget(targets.get(0));
                             questRepo.save(q);
-                        } else {
-                            System.out.println("⚠️ Misión saltada: No se encontró al monstruo " + qDto.target);
                         }
                     }
                     System.out.println("✅ Misiones cargadas.");
@@ -126,17 +117,14 @@ public class DataLoader {
         };
     }
 
-    // DTOs Auxiliares
     static class MonsterJsonDto {
         public String name, type, element, weakness;
         public Integer threatLevel;
         public List<String> drops, habitats;
     }
-
     static class QuestJsonDto {
-        public String name;
+        public String name, target;
         public Integer difficulty;
         public Double reward;
-        public String target;
     }
 }

@@ -38,7 +38,7 @@ public class HuntingLogService {
         Quest quest = questRepository.findById(request.questId())
                 .orElseThrow(() -> new ResourceNotFoundException("Misión", request.questId()));
 
-        // 2. Lógica de Negocio (Rango)
+        //Lógica de Negocio (Rango)
         if (hunter.getRank() < quest.getDifficulty()) {
             throw new IllegalArgumentException("Rango insuficiente: Se requiere " + quest.getDifficulty() + " pero tienes " + hunter.getRank());
         }

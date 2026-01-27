@@ -17,7 +17,7 @@ List<Monster> findByWeakness(String weakness);
 List<Monster>findByHabitats_Zone(HabitatName zone);
 
 // Consulta compleja: Buscar monstruos por nombre, materiales, debilidad y zona de hábitat con uso de JOIN FETCH para evitar N+1 y LOWER CONCAT
-@Query("SELECT DISTINCT m FROM Monster m " +
+    @Query("SELECT DISTINCT m FROM Monster m " +
         "JOIN FETCH m.habitats h " +
         "LEFT JOIN FETCH m.drops " +
         "WHERE LOWER(m.name) LIKE LOWER(CONCAT('%', :name, '%')) " +

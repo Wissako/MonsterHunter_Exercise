@@ -1,12 +1,12 @@
 package com.luis.proyectofinal_luisalfonso.models.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
-import java.util.List;
+// IMPORTANTE: Usamos Set y HashSet
+import java.util.HashSet;
+import java.util.Set;
 
 @Builder
 @NoArgsConstructor
@@ -36,14 +36,15 @@ public class Monster {
     @Column(name="monster_Threat_level", nullable = false)
     @Range(min = 1, max = 10)
     private Integer threatLevel=5;
-    // Relaciones
+
+    //Utilizamos Set para evitar duplicados y poder hacer llamadas complejas desde postman
     @ManyToMany
     @JoinTable(
             name = "monster_materials",
             joinColumns = @JoinColumn(name = "monster_id"),
             inverseJoinColumns = @JoinColumn(name = "material_id")
     )
-    private List<Material> drops;
+    private Set<Material> drops = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
@@ -51,5 +52,5 @@ public class Monster {
             joinColumns = @JoinColumn(name = "monster_id"),
             inverseJoinColumns = @JoinColumn(name = "habitat_id")
     )
-    private List<Habitat> habitats;
+    private Set<Habitat> habitats = new HashSet<>();
 }

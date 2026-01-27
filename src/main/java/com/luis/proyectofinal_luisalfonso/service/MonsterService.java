@@ -48,6 +48,7 @@ public class MonsterService {
                 .collect(Collectors.toList());
     }
  //Buscar por nombre, debilidad y hábitat (Consulta compleja con JOIN FETCH y LOWER CONCAT)
+ //Las relaciones deben ser Set(HasSet) de FetchType.EAGER para poder hacer la llamada en postman
     public List<MonsterResponse> complexSearch(String name,String weakness, HabitatName zone){
         return monsterRepository.findComplexSearch(name, weakness, zone)
                 .stream()
