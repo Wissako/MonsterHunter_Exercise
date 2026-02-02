@@ -37,6 +37,11 @@ public class HunterController {
     public ResponseEntity<HunterResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(hunterService.getHunterById(id));
     }
+    // PUT: Actualizar
+    @PutMapping("/{id}")
+    public ResponseEntity<HunterResponse> update(@PathVariable Long id, @RequestBody @Valid HunterRequest request) {
+        return ResponseEntity.ok(hunterService.updateHunter(id, request));
+    }
 
     // DELETE: Borrar
     @DeleteMapping("/{id}")

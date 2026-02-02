@@ -24,13 +24,10 @@ public class HunterService {
 
     @Transactional
     public HunterResponse createHunter(HunterRequest request) {
-        // 1. Validaciones de Negocio
         if (hunterRepository.findByEmail(request.email())) {
             throw new IllegalArgumentException("El email ya está en uso");
         }
-        // 2. MapStruct crea la entidad
         Hunter hunter = hunterMapper.toEntity(request);
-        //guardar cazador
         return hunterMapper.toResponse(hunterRepository.save(hunter));
     }
 
@@ -52,5 +49,29 @@ public class HunterService {
             throw new ResourceNotFoundException("Cazador", id);
         }
         hunterRepository.deleteById(id);
+    }
+
+    //modificar cazador
+    @Transactional
+    public HunterResponse updateHunter(Long id, HunterRequest request) {
+        // 1. Buscamos al cazador antiguo
+        Hunter existingHunter = hunterRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cazador", id));
+
+        // 2. Comprobamos si el email cambia y si ya existe en otro usuario
+        if (!existingHunter.getEmail().equalsIgnoreCase(request.email()) &&
+                hunterRepository.findByEmail(request.email())) {
+            throw new IllegalArgumentException("El email ya está en uso por otro cazador");
+        }
+
+        // 3. Actualizamos los datos (usando el mapper o setters manuales)
+        // actualizar a mano aquí para no perder el ID
+        existingHunter.setName(request.name());
+        existingHunter.setRank(request.rank());
+        existingHunter.setEmail(request.email());
+        existingHunter.setMainWeapon(hunterMapper.mapWeapon(request.mainWeapon())); // Reusamos el método del mapper para convertir String a Enum
+
+        // 4. Guardamos
+        return hunterMapper.toResponse(hunterRepository.save(existingHunter));
     }
 }

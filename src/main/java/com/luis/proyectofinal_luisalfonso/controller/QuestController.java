@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/quests")
+@CrossOrigin(origins = "*")
 public class QuestController {
 
     @Autowired

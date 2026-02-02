@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/hunting-logs")
+@CrossOrigin(origins = "*")
 public class HuntingLogController {
 @Autowired
         private HuntingLogService huntingLogService;
