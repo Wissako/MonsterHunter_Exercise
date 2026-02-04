@@ -37,6 +37,9 @@ public class Monster {
     @Range(min = 1, max = 10)
     private Integer threatLevel=5;
 
+    @Column(name="image_url")
+    private String imageUrl;
+
     //Utilizamos Set para evitar duplicados y poder hacer llamadas complejas desde postman
     @ManyToMany
     @JoinTable(

@@ -53,6 +53,7 @@ public class DataLoader {
                             m.setElement(dto.element);
                             m.setWeakness(dto.weakness);
                             m.setThreatLevel(dto.threatLevel);
+                            m.setImageUrl(dto.imageUrl);
 
                             // Procesar Materiales
                             List<Material> tempMaterials = new ArrayList<>();
@@ -121,6 +122,7 @@ public class DataLoader {
         public String name, type, element, weakness;
         public Integer threatLevel;
         public List<String> drops, habitats;
+        public String imageUrl;
     }
     static class QuestJsonDto {
         public String name, target;

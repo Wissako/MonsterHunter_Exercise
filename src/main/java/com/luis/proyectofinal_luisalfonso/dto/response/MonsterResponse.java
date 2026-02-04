@@ -9,6 +9,7 @@ public record MonsterResponse(
         String element,
         String weakness,
         Integer threatLevel,
+        String imageUrl,
         List<String> materials,
         List<String> habitats
 ) {
