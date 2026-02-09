@@ -5,7 +5,7 @@
     "element": "Fire",
     "weakness": "Dragon",
     "threatLevel": 6,
-    "imageUrl": "/iconos/rathalos.webp",
+    "imageUrl": "/img/Rathalos.png",
     "habitats": ["ANCIENT_FOREST", "VOLCANO"],
     "drops": ["Rathalos Scale", "Rathalos Shell"]
   },
@@ -15,7 +15,7 @@
     "element": "None",
     "weakness": "Ice",
     "threatLevel": 7,
-    "imageUrl": "/img/diablos.webp",
+    "imageUrl": "/img/Diablos.png",
     "habitats": ["WILDSPIRE_WASTE", "VOLCANO"],
     "drops": ["Twisted Horn", "Diablos Ridge"]
   },
@@ -25,8 +25,130 @@
     "element": "Thunder",
     "weakness": "Ice",
     "threatLevel": 8,
-    "imageUrl": "/img/zinogre.jpg",
+    "imageUrl": "/img/Zinogre.png",
     "habitats": ["ANCIENT_FOREST", "CORAL_HIGHLANDS"],
     "drops": ["Zinogre Cortex", "Fulgsur"]
-  }
+  },
+    {
+        "name": "Nergigante",
+        "type": "Elder Dragon",
+        "element": "None",
+        "weakness": "Dragon",
+        "threatLevel": 9,
+        "imageUrl": "/img/Nergigante.png",
+        "habitats": ["ANCIENT_FOREST"],
+        "drops": ["Nergigante Talon", "Nergigante Carapace"]
+    },
+    {
+        "name": "Kirin",
+        "type": "Elder Dragon",
+        "element": "Thunder",
+        "weakness": "Fire",
+        "threatLevel": 10,
+        "imageUrl": "/img/Kirin.png",
+        "habitats": ["CORAL_HIGHLANDS"],
+        "drops": ["Kirin Thunderhorn", "Kirin Hide"]
+    },
+    {
+        "name": "Teostra",
+        "type": "Elder Dragon",
+        "element": "Fire",
+        "weakness": "Water",
+        "threatLevel": 9,
+        "imageUrl": "/img/Teostra.png",
+        "habitats": ["VOLCANO"],
+        "drops": ["Teostra Mane", "Teostra Carapace"]
+    },
+    {
+        "name": "Vaal Hazak",
+        "type": "Elder Dragon",
+        "element": "Dragon",
+        "weakness": "Thunder",
+        "threatLevel": 8,
+        "imageUrl": "/img/VaalHazak.png",
+        "habitats": ["ROCKY_SLOPES"],
+        "drops": ["Vaal Hazak Fang", "Vaal Hazak Scale"]
+    },
+    {
+        "name": "Xeno'jiiva",
+        "type": "Elder Dragon",
+        "element": "Dragon",
+        "weakness": "Ice",
+        "threatLevel": 10,
+        "imageUrl": "/img/Xenojiiva.png",
+        "habitats": ["ANCIENT_FOREST"],
+        "drops": ["Xeno'jiiva Shard", "Xeno'jiiva Carapace"]
+    },
+    {
+        "name": "Kulve Taroth",
+        "type": "Elder Dragon",
+        "element": "Fire",
+        "weakness": "Water",
+        "threatLevel": 9,
+        "imageUrl": "/img/KulveTaroth.png",
+        "habitats": ["ANCIENT_FOREST"],
+        "drops": ["Kulve Taroth Shard", "Kulve Taroth Carapace"]
+    },
+    {
+        "name": "Rajang",
+        "type": "Fanged Wyvern",
+        "element": "Thunder",
+        "weakness": "Ice",
+        "threatLevel": 9,
+        "imageUrl": "/img/Rajang.png",
+        "habitats": ["ANCIENT_FOREST"],
+        "drops": ["Rajang Cortex", "Rajang Tail"]
+    },
+    {
+        "name": "Bazelgeuse",
+        "type": "Flying Wyvern",
+        "element": "None",
+        "weakness": "Ice",
+        "threatLevel": 8,
+        "imageUrl": "/img/Bazelgeuse.png",
+        "habitats": ["ANCIENT_FOREST"],
+        "drops": ["Bazelgeuse Shard", "Bazelgeuse Carapace"]
+    },
+    {
+        "name": "Glavenus",
+        "type": "Brute Wyvern",
+        "element": "Fire",
+        "weakness": "Water",
+        "threatLevel": 7,
+        "imageUrl": "/img/Glavenus.png",
+        "habitats": ["ANCIENT_FOREST"],
+        "drops": ["Glavenus Shard", "Glavenus Carapace"]
+    },
+    {
+        "name": "Kushala Daora",
+        "type": "Elder Dragon",
+        "element": "Wind",
+        "weakness": "Thunder",
+        "threatLevel": 8,
+        "imageUrl": "/img/KushalaDaora.png",
+        "habitats": ["ANCIENT_FOREST"],
+        "drops": ["Kushala Daora Shard", "Kushala Daora Carapace"]
+    },
+    {
+        "name": "Shara Ishvalda",
+        "type": "Elder Dragon",
+        "element": "Earth",
+        "weakness": "Water",
+        "threatLevel": 9,
+        "imageUrl": "/img/SharaIshvalda.png",
+        "habitats": ["ANCIENT_FOREST"],
+        "drops": ["Shara Ishvalda Shard", "Shara Ishvalda Carapace"]
+    },
+    {
+        "name": "Safi'jiiva",
+        "type": "Elder Dragon",
+        "element": "Dragon",
+        "weakness": "Ice",
+        "threatLevel": 10,
+        "imageUrl": "/img/Safijiiva.png",
+        "habitats": ["ANCIENT_FOREST"],
+        "drops": ["Safi'jiiva Shard", "Safi'jiiva Carapace"]
+    }
+
+
 ]
