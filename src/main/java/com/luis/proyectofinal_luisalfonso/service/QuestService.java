@@ -29,6 +29,9 @@ public class QuestService {
 
     @Transactional
     public QuestResponse createQuest(@Valid QuestRequest request){
+        if (questRepository.existsByName(request.name())) {
+            throw new IllegalArgumentException("Ya existe una misión con ese nombre.");
+        }
         // 1. Buscamos el monstruo
         Monster target = monsterRepository.findById(request.targetMonsterId())
                 .orElseThrow(() -> new ResourceNotFoundException("Monstruo", request.targetMonsterId()));
@@ -38,6 +41,7 @@ public class QuestService {
         // 4. Guardar
         Quest savedQuest = questRepository.save(quest);
         return questMapper.questToQuestResponse(savedQuest);
+
     }
 
     public List<QuestResponse> getAllQuests() {

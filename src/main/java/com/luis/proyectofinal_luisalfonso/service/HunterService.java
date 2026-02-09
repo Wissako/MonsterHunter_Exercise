@@ -9,7 +9,6 @@ import com.luis.proyectofinal_luisalfonso.repositories.HunterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,7 +24,7 @@ public class HunterService {
 
     @Transactional
     public HunterResponse createHunter(HunterRequest request) {
-        if (hunterRepository.findByEmail(request.email())) {
+        if (hunterRepository.existsByEmail(request.email())) {
             throw new IllegalArgumentException("El email ya está en uso");
         }
         Hunter hunter = hunterMapper.toEntity(request);
@@ -61,7 +60,7 @@ public class HunterService {
 
         // 2. Comprobamos si el email cambia y si ya existe en otro usuario
         if (!existingHunter.getEmail().equalsIgnoreCase(request.email()) &&
-                hunterRepository.findByEmail(request.email())) {
+                hunterRepository.existsByEmail(request.email())) {
             throw new IllegalArgumentException("El email ya está en uso por otro cazador");
         }
 

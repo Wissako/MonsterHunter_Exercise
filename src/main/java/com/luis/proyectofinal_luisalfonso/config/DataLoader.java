@@ -101,7 +101,7 @@ public class DataLoader {
                     List<QuestJsonDto> quests = mapper.readValue(inputQuest, new TypeReference<List<QuestJsonDto>>(){});
                     for (QuestJsonDto qDto : quests) {
                         List<Monster> targets = monsterRepo.findByNameContainingIgnoreCase(qDto.target);
-                        if (!targets.isEmpty()) {
+                        if (!targets.isEmpty() && !questRepo.existsByName(qDto.name)) {
                             Quest q = new Quest();
                             q.setName(qDto.name);
                             q.setDifficulty(qDto.difficulty);
