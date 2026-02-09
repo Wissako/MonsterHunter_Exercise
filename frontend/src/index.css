@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
+
+@root {
+    --font-family: 'MedievalSharp', cursive, serif;
+    --font-size: 18px;
+
+    /*Colores*/
+    --primary: #8b0000
+    --primary-hover: #a52a2a;
+    --primary-focus: rgba(139, 0, 0, 0.2);
+    --backgound-color: #dcccb3;
+    --card-background-color: rgba(244, 228, 188, 0.7);
+    --text-color: #3e2723;
+    --muted-color: #5d4037;
+    --muted-border-color: #8d6e63;
+    --border-radius: 4px;
+}
+body{
+    background-image: url('/img/fondopapel.jpg');
+    background-attachment: fixed;
+}
+
+.monster-card >header{
+    background: transparent;
+}
+
+article{
+background-color: var(--card-background-color);
+    
+    border: 2px solid #6b5a4a;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s ease-in-out;
+
+}
+article:nth-child(odd){
+    transform: rotate(-1deg)
+}
+article:nth-child(even){
+    transform: rotate(1deg)
+}
+article:hover{
+    transform: scale(1.02) rotate(0deg);
+    z-index: 10;
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3);
+}
+
+article img{
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    filter: contrast(1.5);
+    opacity: 0.95;
+    object-fit: contain;
+    max-height: 150px;
+    transition: all 0.3s ease;
+}
+
+nav.navbar{
+background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'), #3e2723;
+border-bottom: 3px solid #1b0f0b;
+padding: 1rem;
+margin-bottom:2rem;
+}
+nav ul li strong,
+nav ul li a {
+    color: #f4e4bc !important;
+    text-shadow: 1px 1px 2px #000; 
+}
+
+nav ul li a[role="button"].outline:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white !important;
+}
+.monster-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem; 
+    margin-top: 1rem;
+}
