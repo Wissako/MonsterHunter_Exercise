@@ -5,6 +5,8 @@ import com.luis.proyectofinal_luisalfonso.mapper.MonsterMapper;
 import com.luis.proyectofinal_luisalfonso.models.enums.HabitatName;
 import com.luis.proyectofinal_luisalfonso.repositories.MonsterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +56,11 @@ public class MonsterService {
                 .stream()
                 .map(monsterMapper::toResponse)
                 .collect(Collectors.toList());
+    }
+    //metodo para paginar los monstruos.
+    public Page<MonsterResponse> getAllMonstersPaged(Pageable pageable) {
+        return monsterRepository.findAll(pageable)
+                .map(monsterMapper::toResponse);
     }
 }
 

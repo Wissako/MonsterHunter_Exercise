@@ -4,6 +4,9 @@ import com.luis.proyectofinal_luisalfonso.dto.response.MonsterResponse;
 import com.luis.proyectofinal_luisalfonso.models.enums.HabitatName;
 import com.luis.proyectofinal_luisalfonso.service.MonsterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,5 +48,13 @@ public class MonsterController {
             @RequestParam String weakness,
             @RequestParam HabitatName zone) {
         return ResponseEntity.ok(monsterService.complexSearch(name, weakness, zone));
+    }
+
+    //Monstruos paginados
+    @GetMapping("/paged")
+    public ResponseEntity<Page<MonsterResponse>> getAllPaged(
+            @PageableDefault(size = 10, page = 0) Pageable pageable
+    ) {
+        return ResponseEntity.ok(monsterService.getAllMonstersPaged(pageable));
     }
 }
