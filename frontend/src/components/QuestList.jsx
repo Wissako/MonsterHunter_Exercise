@@ -15,23 +15,21 @@ export default function QuestList() {
   return (
     <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', // Mismo tamaño que Monsters
+        gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
         gap: '25px',
         padding: '20px'
     }}>
       {quests.map(q => (
         <article key={q.id} style={{
-            border: '2px solid #5d4037', // Borde marrón estilo MH
+            border: '2px solid #5d4037', 
             borderRadius: '12px',
-            backgroundColor: '#2d3436',  // Fondo oscuro
+            backgroundColor: '#2d3436',  
             boxShadow: '0 6px 10px rgba(0,0,0,0.5)',
             overflow: 'hidden',
             display: 'flex',
             flexDirection: 'column',
-            transition: 'transform 0.2s', // Un pequeño efecto al pasar el ratón (opcional)
+            transition: 'transform 0.2s', 
         }}>
-          
-          {/* --- CABECERA (Igual que Monsters) --- */}
           <header style={{ 
               backgroundColor: '#ecf0f1', 
               padding: '12px 15px', 
@@ -44,7 +42,7 @@ export default function QuestList() {
                 {q.name}
             </strong>
             <span style={{
-                background: '#e67e22', // Naranja para diferenciar de la amenaza roja
+                background: '#e67e22', 
                 color: 'white', 
                 padding: '4px 8px', 
                 borderRadius: '4px', 
@@ -54,11 +52,9 @@ export default function QuestList() {
                 ★ {q.difficulty}
             </span>
           </header>
-
-          {/* --- CUERPO DE LA MISIÓN --- */}
           <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
             
-            {/* Icono decorativo central (opcional, rellena el hueco de la imagen) */}
+           
             <div style={{ 
                 textAlign: 'center', 
                 fontSize: '3rem', 
@@ -77,12 +73,9 @@ export default function QuestList() {
             <p style={{margin: 0, fontSize: '1rem', color: '#ecf0f1'}}>
                 <span style={{color: '#f1c40f', fontWeight:'bold'}}>💰 Recompensa:</span> 
                 <br/>
-                {/* Color dorado brillante para el dinero */}
                 <span style={{marginLeft: '10px', color: '#ffd700', fontWeight: 'bold'}}>{q.reward}z</span>
             </p>
           </div>
-
-          {/* --- PIE DE TARJETA (Botón de Aceptar) --- */}
           <div style={{ padding: '15px', backgroundColor: '#1e272e', borderTop: '1px solid #5d4037', textAlign: 'center' }}>
              <button style={{
                  width: '100%',

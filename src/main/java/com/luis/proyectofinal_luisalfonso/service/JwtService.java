@@ -10,35 +10,37 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
 
-    // 1. CLAVE FIJA: Vital para que no te de error 401 cada vez que reinicias
     private static final String SECRET_PHRASE = "esta_es_una_clave_muy_segura_y_larga_para_que_spring_no_se_queje_12345";
 
     @Getter
     private final SecretKey secretKey;
 
     public JwtService() {
-        // Usamos la frase fija
-        this.secretKey = Keys.hmacShaKeyFor(SECRET_PHRASE.getBytes(StandardCharsets.UTF_8));
+
+        byte[] keyBytes = SECRET_PHRASE.getBytes(StandardCharsets.UTF_8);
+        byte[] key256 = new byte[32];
+        System.arraycopy(keyBytes, 0, key256, 0, 32);
+        this.secretKey = Keys.hmacShaKeyFor(key256);
     }
 
     public String generateToken(Authentication authentication) {
-        // Spring ya devuelve los roles como "ROLE_ADMIN" o "ROLE_USER"
-        String roles = authentication.getAuthorities().stream()
+        List<String> roles = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(" "));
+                .collect(Collectors.toList());
 
         return Jwts.builder()
                 .subject(authentication.getName())
                 .issuer("gremio-monster-hunter")
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 86400000)) // 24h
+                .expiration(new Date(System.currentTimeMillis() + 86400000))
                 .claim("roles", roles)
-                .signWith(secretKey)
+                .signWith(secretKey) // Usará HS256 con clave de 256 bits
                 .compact();
     }
 }
