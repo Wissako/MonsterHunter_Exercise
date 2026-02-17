@@ -3,6 +3,7 @@ package com.luis.proyectofinal_luisalfonso.dto.request;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
+import org.aspectj.weaver.ast.Not;
 import org.hibernate.validator.constraints.Range;
 
 public record HunterRequest(
@@ -18,6 +19,9 @@ public record HunterRequest(
 
         @NotBlank(message = "El email es obligatorio")
         @Email(message = "El formato del email no es válido")
-        String email
+        String email,
+
+        @NotBlank(message="La Constraseña es obligatoria")
+        String password
 ) {
 }

@@ -30,6 +30,12 @@ public class Hunter {
     @Column(name="email", nullable = false)
     private String email;
 
+    @Column(name="password",nullable = false)
+    private String password;
+
+    @Column(name = "role")
+    private String role; //ADMIN, USER
+
     @OneToMany(mappedBy = "hunter", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HuntingLog> huntingLogs;
 }
