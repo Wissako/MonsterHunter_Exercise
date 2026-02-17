@@ -40,18 +40,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .cors(Customizer.withDefaults()) // Habilitar CORS por si acaso
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ✅ Configuración CORS correcta
                 .authorizeHttpRequests(auth -> auth
-                        // Rutas públicas (Login, Registro y Ver cosas)
+                        // 1. Rutas Públicas
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/monsters/**", "/quests/**", "/hunters/**").permitAll()
 
-                        // Solo el ADMIN puede crear, borrar o editar
                         .requestMatchers(HttpMethod.POST).hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT).hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE).hasRole("ADMIN")
 
-                        // Cualquier otra cosa requiere estar logueado
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
@@ -60,23 +58,23 @@ public class SecurityConfig {
                                 .jwtAuthenticationConverter(jwtAuthenticationConverter())
                         )
                 )
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                );
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }
 
     @Bean
     public JwtDecoder jwtDecoder() {
+        // Usa la misma clave FIJA del JwtService
         return NimbusJwtDecoder.withSecretKey(jwtService.getSecretKey()).build();
     }
 
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        authoritiesConverter.setAuthoritiesClaimName("role");
-        authoritiesConverter.setAuthorityPrefix("ROLE_"); // Spring Security espera ROLE_ADMIN
+
+        authoritiesConverter.setAuthoritiesClaimName("roles");
+        authoritiesConverter.setAuthorityPrefix("");
 
         JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
         jwtConverter.setJwtGrantedAuthoritiesConverter(authoritiesConverter);
@@ -95,14 +93,12 @@ public class SecurityConfig {
         provider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(provider);
     }
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Permitimos el origen de tu Frontend (React)
         configuration.setAllowedOrigins(List.of("http://localhost:5173"));
-        // Permitimos todos los métodos (GET, POST, DELETE, etc.)
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        // Permitimos todas las cabeceras (necesario para el Token)
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
 
