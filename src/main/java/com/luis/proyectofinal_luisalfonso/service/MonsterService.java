@@ -1,7 +1,9 @@
 package com.luis.proyectofinal_luisalfonso.service;
 
+import com.luis.proyectofinal_luisalfonso.dto.request.MonsterRequest;
 import com.luis.proyectofinal_luisalfonso.dto.response.MonsterResponse;
 import com.luis.proyectofinal_luisalfonso.mapper.MonsterMapper;
+import com.luis.proyectofinal_luisalfonso.models.entities.Monster;
 import com.luis.proyectofinal_luisalfonso.models.enums.HabitatName;
 import com.luis.proyectofinal_luisalfonso.repositories.MonsterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +63,13 @@ public class MonsterService {
     public Page<MonsterResponse> getAllMonstersPaged(Pageable pageable) {
         return monsterRepository.findAll(pageable)
                 .map(monsterMapper::toResponse);
+    }
+
+    @Transactional // Importante: escritura
+    public MonsterResponse createMonster(MonsterRequest request) {
+        Monster monster = monsterMapper.toEntity(request);
+        Monster savedMonster = monsterRepository.save(monster);
+        return monsterMapper.toResponse(savedMonster);
     }
 }
 

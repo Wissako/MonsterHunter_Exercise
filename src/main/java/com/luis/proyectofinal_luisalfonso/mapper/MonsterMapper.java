@@ -1,5 +1,6 @@
 package com.luis.proyectofinal_luisalfonso.mapper;
 
+import com.luis.proyectofinal_luisalfonso.dto.request.MonsterRequest;
 import com.luis.proyectofinal_luisalfonso.dto.response.MonsterResponse;
 import com.luis.proyectofinal_luisalfonso.models.entities.Habitat;
 import com.luis.proyectofinal_luisalfonso.models.entities.Material;
@@ -33,4 +34,6 @@ public interface MonsterMapper {
                 .map(h -> h.getZone().name())
                 .collect(Collectors.toList());
     }
+
+    Monster toEntity(MonsterRequest request);
 }
