@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/hunters")
-@CrossOrigin(origins = "*")
+
 public class HunterController {
 
     @Autowired
